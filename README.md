@@ -1,3 +1,18 @@
+## This Fork
+Original repo is here: https://github.com/ardkastrati/EEGEyeNet
+
+Data is here: https://osf.io/ktv7m/
+
+For task specific data, after setting [config.py](./config.py), [main.py](./main.py) will look for files in ./data, for example: 
+Position_task_with_dots_synchronised_min_hilbert.npz
+
+These files can be downloaded from OSF. For example, the example above is in:
+OSF / Dropbox: EEGEyeMey / prepared
+
+Also, for [config.py](./config.py), it appears that `retrain=False` needs model weights to be available, which would typically get saved under ./runs when using `retrain=True`.
+
+Parent's repo README:
+
 ## Introduction EEGEyeNet
 
 EEGEyeNet is a benchmark to evaluate ET prediction based on EEG measurements with an increasing level of difficulty.

@@ -2,8 +2,8 @@
 /venv/
 *.pyc
 .DS_Store
-/runs/*
-data/*
+#/runs/* # add some model weights to the repo to avoid retraining
+#data/* # added separate .gitignore inside data just to show where to download data
 run.sh
 log/*
 tables/*
