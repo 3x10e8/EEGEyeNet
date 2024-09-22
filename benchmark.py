@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 from config import config
 from hyperparameters import all_models
 import os
-
+from glob import glob
 
 # return boolean arrays with length corresponding to n_samples
 # the split is done based on the number of IDs
@@ -31,7 +31,7 @@ def split(ids, train, val, test):
 
 def try_models(trainX, trainY, ids, models, N=5, scoring=None, scale=False, save_trail='', save=False):
 
-    logging.info("Training the models")
+    logging.info(f"Training the models: config['retrain']: {config['retrain']}")
     train, val, test = split(ids, 0.7, 0.15, 0.15)
     X_train, y_train = trainX[train], trainY[train]
     X_val, y_val = trainX[val], trainY[val]
@@ -49,7 +49,7 @@ def try_models(trainX, trainY, ids, models, N=5, scoring=None, scale=False, save
     statistics = []
 
     for name, model in models.items():
-        logging.info("Training of " + name)
+        logging.info("Training/Testing of " + name)
 
         model_runs = []
 
@@ -67,7 +67,10 @@ def try_models(trainX, trainY, ids, models, N=5, scoring=None, scale=False, save
             if config['retrain']:
                 trainer.fit(X_train, y_train, X_val, y_val)
             else:
-                trainer.load(path)
+                #updated_path = glob(path + f'*{name}*.pth')[0] # use the first full path to the model
+                logging.info("Loading models from path: " + path)
+                trainer.load(path, force_load_model_name = f'{name}_nb_0_.pth')
+                logging.info(f"Loaded {trainer.ensemble.model_name}") 
 
             if config['save_models']:
                 trainer.save(path)

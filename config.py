@@ -33,10 +33,10 @@ config['data_dir'] = './data/'
 # Path of root
 config['root_dir'] = '.'
 # Retrain or load already trained
-config['retrain'] = True
-config['save_models'] = True
+config['retrain'] = False # True
+config['save_models'] = False # lets only run inference this time, previously #True
 # If retrain is false we need to provide where to load the experiment files
-config['load_experiment_dir'] = ''
+config['load_experiment_dir'] = '1726941855_Position_task_dots_min/' # this is sub-directory of config['log_dir']
 # all_EEG_file should specify the name of the file where the prepared data is located (if emp
 def build_file_name():
     all_EEG_file = config['task'] + '_with_' + config['dataset']

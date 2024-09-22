@@ -33,5 +33,5 @@ class Ensemble:
     def save(self, path):
         self.ensemble.save(path)
 
-    def load(self, path):
-        self.ensemble.load(path)
+    def load(self, path, force_load_model_name = None):
+        self.ensemble.load(path, force_load_model_name)

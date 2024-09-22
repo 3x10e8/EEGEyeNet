@@ -91,16 +91,27 @@ class Ensemble_torch:
             ckpt_dir = path + self.model_name + '_nb_{}_'.format(i) + '.pth'
             torch.save(model.state_dict(), ckpt_dir)
 
-    def load(self, path):
+    def load(self, path, force_load_model_name = None):
         #print(f"cuda avail {torch.cuda.is_available()}")
         self.models = []
-        for file in os.listdir(path):
-            if not self.load_file_pattern.match(file):
-                continue
+        if force_load_model_name == None: # default behavior
+            for file in os.listdir(path):
+                if not self.load_file_pattern.match(file):
+                    continue
+                # These 3 lines are needed for torch to load
+                logging.info(f"Loading model nb from file {file} and predict with it")
+                model = self.model(loss=self.loss, model_number=0, batch_size=self.batch_size,
+                                **self.model_params)  # model = TheModelClass(*args, **kwargs)
+                #print(path + file)
+                model.load_state_dict(torch.load(path + file))  # model.load_state_dict(torch.load(PATH))
+                model.eval()  # needed before prediction
+                self.models.append(model)
+        else: # override load_file_pattern matching, instead take exact model name from user:
+            file = force_load_model_name
             # These 3 lines are needed for torch to load
             logging.info(f"Loading model nb from file {file} and predict with it")
             model = self.model(loss=self.loss, model_number=0, batch_size=self.batch_size,
-                               **self.model_params)  # model = TheModelClass(*args, **kwargs)
+                            **self.model_params)  # model = TheModelClass(*args, **kwargs)
             #print(path + file)
             model.load_state_dict(torch.load(path + file))  # model.load_state_dict(torch.load(PATH))
             model.eval()  # needed before prediction
